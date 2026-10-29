@@ -134,7 +134,16 @@ function Player() {
           </div>
           {sliders.map(([k, label, min, max]) => (
             <div key={k}>
-              <div className="flex justify-between text-xs mb-1"><span>{label}</span><span className="font-mono text-primary">{g[k]}</span></div>
+              <div className="flex items-center justify-between gap-2 text-xs mb-1">
+                <span>{label}</span>
+                <div className="flex items-center gap-1">
+                  <input type="number" inputMode="numeric" min={min} max={max} value={g[k]}
+                    onChange={(e) => { const n = Math.max(min, Math.min(max, Number(e.target.value) || 0)); setG({ ...g, [k]: n }); }}
+                    className="w-16 rounded-md bg-secondary px-2 py-1 text-right font-mono text-primary" aria-label={`${label} value`} />
+                  <button onClick={() => setG({ ...g, [k]: DEF[k] })} disabled={g[k] === DEF[k]}
+                    className="rounded-md bg-secondary px-2 py-1 disabled:opacity-40" aria-label={`Reset ${label}`}>↺</button>
+                </div>
+              </div>
               <input type="range" min={min} max={max} value={g[k]} onChange={(e) => setG({ ...g, [k]: +e.target.value })} onDoubleClick={() => setG({ ...g, [k]: DEF[k] })} className="w-full accent-primary" />
             </div>
           ))}
